@@ -16,10 +16,11 @@ class ControllerFactory
     /** @var Controller[] */
     private $controllers = [];
 
-    public function __construct(Container $container, LoggerInterface $logger)
+    public function __construct(Container $container, LoggerInterface $logger, $controllerNamespace)
     {
         $this->logger = $logger;
         $this->container = $container;
+        $this->controllerNamespace = $controllerNamespace;
     }
 
     public function __call($name, $arguments)
@@ -32,10 +33,10 @@ class ControllerFactory
             throw new \ErrorException("Cannot call ControllerFactory::$name");
         }
         $controllerName = $matches[1];
-        $controllerClass = "\\alexshadie\bicycle\\controllers\\" . $controllerName;
+        $controllerClass = $this->controllerNamespace . $controllerName;
 
         if (!class_exists($controllerClass)) {
-            throw new \ErrorException("Unknown controller {$matches[1]}");
+            throw new \ErrorException("Unknown controller, class {$controllerClass}, {$matches[1]}");
         };
         return $this->controllers[$name] = $this->getController($controllerClass);
     }
