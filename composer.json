@@ -1,0 +1,31 @@
+{
+    "name": "alexshadie/bicycle",
+    "description": "Just another bicycle framework for webapp",
+    "type": "library",
+    "require": {
+        "php": "^7.1",
+        "psr/log": "^1.0",
+        "psr/container": "^1.0",
+        "monolog/monolog": "^1.17",
+        "mikecao/flight": "^1.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "phpunit/php-code-coverage": "^6.0",
+        "phpunit/dbunit": "^4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Shadie",
+            "email": "alex@astra.ws"
+        }
+    ],
+    "autoload" : {
+        "psr-4" : {
+            "bicycle\\": "src/",
+            "tests\\" : "tests/"
+        }
+    },
+    "minimum-stability": "stable"
+}
