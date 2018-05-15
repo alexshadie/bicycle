@@ -29,7 +29,8 @@ abstract class App
     {
         $this->beforeInit();
 
-        $this->bootstrap = new ($this->bootstrapClass)($this->root);
+        $cls = $this->bootstrapClass;
+        $this->bootstrap = new $cls($this->root);
 
         $this->bootstrap->loadConfiguration($this->bootstrap->getMode());
 
@@ -51,6 +52,7 @@ abstract class App
 
     public function run()
     {
+        $this->init();
         try {
             $this->app->start();
         } catch (\Exception | \Throwable $e) {
