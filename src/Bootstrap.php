@@ -41,7 +41,7 @@ class Bootstrap
             define("TESTING", 1);
             return "testing";
         }
-        return file_get_contents($this->pathToRoot . ".mode");
+        return trim(file_get_contents($this->pathToRoot . ".mode"));
     }
 
     /**
