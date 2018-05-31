@@ -37,7 +37,7 @@ class Bootstrap
 
     public function getMode()
     {
-        if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' && $_SERVER['HTTP_HOST'] == 'localhost:8000') {
+        if (($_SERVER['REMOTE_ADDR']??'') == '127.0.0.1' && ($_SERVER['HTTP_HOST']??'') == 'localhost:8000') {
             define("TESTING", 1);
             return "testing";
         }
