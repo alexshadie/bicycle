@@ -46,7 +46,7 @@ class ControllerFactory
      * @return Controller
      * @throws \Exception
      */
-    protected function getController($controllerClass)
+    public function getController($controllerClass)
     {
         $class = null;
         try {
