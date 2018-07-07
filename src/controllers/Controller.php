@@ -18,6 +18,8 @@ class Controller
     private $logger;
     /** @var Container */
     private $container;
+    /** @var bool */
+    protected $resultShouldBeReturned = false;
 
     public function setLogger(LoggerInterface $logger)
     {
@@ -77,7 +79,11 @@ class Controller
             throw new \ErrorException("Return value must be subclass of ActionResult");
         }
 
-        $this->processResult($result)->send();
+        if ($this->resultShouldBeReturned) {
+            return $this->processResult($result);
+        } else {
+            $this->processResult($result)->send();
+        }
     }
 
     public function beforeAction(Request $request, string $method, array $params)
@@ -130,6 +136,16 @@ class Controller
     protected function prepareView(ViewResult $result)
     {
         $result->setCommonParams([]);
+    }
+
+    /**
+     * @param bool $resultShouldBeReturned
+     * @return Controller
+     */
+    public function setResultShouldBeReturned(bool $resultShouldBeReturned): Controller
+    {
+        $this->resultShouldBeReturned = $resultShouldBeReturned;
+        return $this;
     }
 
 }
