@@ -62,10 +62,9 @@ class Controller
             $params[] = $this->container->autowire($methodArg->getClass()->getName());
         }
 
-        $this->beforeAction($this->container->autowire(Request::class), $method, $params);
-        $this->preCall($method, $params);
-
         try {
+            $this->beforeAction($this->container->autowire(Request::class), $method, $params);
+            $this->preCall($method, $params);
             $result = call_user_func_array([$this, $method], $params);
         } catch (\Exception $e) {
             if (method_exists($this, 'handleException')) {
