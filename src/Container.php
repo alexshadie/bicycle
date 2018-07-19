@@ -67,7 +67,7 @@ class Container extends \Symfony\Component\DependencyInjection\Container
             error_log($className);
             return $this;
         }
-        $className = strtolower($className);
+//        $className = strtolower($className);
         if (!isset($this->typesMap[$className])) {
             throw new \ErrorException("Service with class {$className} not found");
         }
