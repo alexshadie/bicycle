@@ -59,11 +59,11 @@ class Controller
         $methodArgs = array_slice($methodArgs, count($arguments));
 
         foreach ($methodArgs as $methodArg) {
-            $params[] = $this->container->autowire($methodArg->getClass()->getName());
+            $params[] = $this->container->getByType($methodArg->getClass()->getName());
         }
 
         try {
-            $this->beforeAction($this->container->autowire(Request::class), $method, $params);
+            $this->beforeAction($this->container->getByType(Request::class), $method, $params);
             $this->preCall($method, $params);
             $result = call_user_func_array([$this, $method], $params);
         } catch (\Exception $e) {

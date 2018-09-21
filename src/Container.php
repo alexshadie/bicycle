@@ -62,9 +62,9 @@ class Container extends \Symfony\Component\DependencyInjection\Container
     public function autowire($className)
     {
         $this->cacheTypeMap();
+        return $this->getByType($className);
         $className = strval($className);
         if ($className === strval(self::class)) {
-            error_log($className);
             return $this;
         }
 //        $className = strtolower($className);
