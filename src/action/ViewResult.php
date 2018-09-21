@@ -31,10 +31,15 @@ class ViewResult extends ActionResult
         $cwd = getcwd();
         chdir(PATH_TO_VIEWS);
         $layoutFile = 'layout/' . $this->layout . ".php";
-        $this->params['view_file'] = $this->view . ".php";
+        $this->params['view_file'] = $viewFile = $this->view . ".php";
         try {
             ob_start();
-            $this->secureRender($layoutFile, $this->params);
+            //  No layout support
+            if ($this->layout) {
+                $this->secureRender($layoutFile, $this->params);
+            } else {
+                $this->secureRender($viewFile, $this->params);
+            }
             $output = ob_get_clean();
         } catch (\Throwable $e) {
             ob_end_clean();
