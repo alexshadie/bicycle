@@ -37,7 +37,7 @@ class ContainerLoader
         if ($containerDumpFile) {
             $class = $containerClassPrefix . 'ProjectServiceContainer';
             $configCache = new ConfigCache($containerDumpFile, $debug);
-            if ($configCache->isFresh()) {
+            if ($configCache->isFresh() && !$debug) {
                 require_once $containerDumpFile;
                 $container = new $class();
             } else {

@@ -82,7 +82,7 @@ class Bootstrap
                 $containerParams,
                 $containerDumpFile,
                 $containerClassPrefix,
-                $mode == 'development'
+                $mode !== 'production'
             );
 
         $this->container->set("container", $this->container);
