@@ -66,15 +66,18 @@ class Controller
             $this->beforeAction($this->container->getByType(Request::class), $method, $params);
             $this->preCall($method, $params);
             $result = call_user_func_array([$this, $method], $params);
+            $this->postCall($method, $params);
         } catch (\Exception $e) {
             if (method_exists($this, 'handleException')) {
                 $result = $this->handleException($e);
             } else {
+                $this->failedCall($method, $params);
                 throw $e;
             }
         }
 
         if (!$result instanceof ActionResult) {
+            $this->failedCall($method, $params);
             throw new \ErrorException("Return value must be subclass of ActionResult");
         }
 
@@ -91,6 +94,16 @@ class Controller
     }
 
     protected function preCall(string $method, array $params)
+    {
+        return true;
+    }
+
+    protected function postCall(string $method, array $params)
+    {
+        return true;
+    }
+
+    protected function failedCall(string $method, array $params)
     {
         return true;
     }
