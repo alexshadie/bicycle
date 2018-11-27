@@ -22,7 +22,7 @@ class Bootstrap
     /** @var Container */
     private $container;
 
-    private $pathToViews = 'views/';
+    protected $pathToViews = 'views/';
 
 
     public function __construct($pathToRoot)
