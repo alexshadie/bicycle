@@ -142,6 +142,16 @@ class Controller
     }
 
     /**
+     * @param string $bean
+     * @return object
+     * @throws \Exception
+     */
+    protected function getBean($bean)
+    {
+        return $this->container->get($bean);
+    }
+
+    /**
      * Extra view params setter. Use it to fill common blocks and so on.
      * @param ViewResult $result
      */
