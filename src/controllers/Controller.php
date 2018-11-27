@@ -142,13 +142,13 @@ class Controller
     }
 
     /**
-     * @param string $bean
+     * @param string $beanClass
      * @return object
      * @throws \Exception
      */
-    protected function getBean($bean)
+    protected function getBeanByInterface($beanClass)
     {
-        return $this->container->get($bean);
+        return $this->container->autowire($beanClass);
     }
 
     /**
