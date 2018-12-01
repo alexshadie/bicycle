@@ -56,25 +56,30 @@ class ControllerFactory
         }
 
         $ctor = $class->getConstructor();
-        $ctorArgs = $ctor->getParameters();
-        $args = [];
-        foreach ($ctorArgs as $ctorArg) {
-            if (!$ctorArg->getType()) {
-                throw new \ErrorException("Undefined constructor args param '" . $ctorArg->getName() . "' for controller " . $controllerClass);
+
+        if ($ctor) {
+            $ctorArgs = $ctor->getParameters();
+            $args = [];
+            foreach ($ctorArgs as $ctorArg) {
+                if (!$ctorArg->getType()) {
+                    throw new \ErrorException("Undefined constructor args param '" . $ctorArg->getName() . "' for controller " . $controllerClass);
+                }
+                $arg = $this->container->getByType($ctorArg->getType()->getName());
+                if (!$arg) {
+                    throw new \ErrorException(
+                        "Constructor arg '" . $ctorArg->getName() . "' " .
+                        "of type ' " . $ctorArg->getType() . "' " .
+                        "for controller " . $controllerClass . " not found in container"
+                    );
+                }
+                $args[] = $arg;
             }
-            $arg = $this->container->getByType($ctorArg->getType()->getName());
-            if (!$arg) {
-                throw new \ErrorException(
-                    "Constructor arg '" . $ctorArg->getName() . "' " .
-                    "of type ' " . $ctorArg->getType() . "' " .
-                    "for controller " . $controllerClass . " not found in container"
-                );
-            }
-            $args[] = $arg;
+            /** @var Controller $obj */
+            $obj = $class->newInstanceArgs($args);
+        } else {
+            $obj = $class->newInstance();
         }
 
-        /** @var Controller $obj */
-        $obj = $class->newInstanceArgs($args);
         $obj->setContainer($this->container);
         $obj->setLogger($this->logger);
 
