@@ -22,6 +22,9 @@ class Bootstrap
     /** @var Container */
     private $container;
 
+    /** @var string  */
+    private $configDir = "config";
+
     protected $pathToViews = 'views/';
 
 
@@ -33,6 +36,11 @@ class Bootstrap
         $this->pathToCache = $this->pathToRuntime . "cache/";
         $this->pathToLogs = $this->pathToRuntime . "logs/";
 
+    }
+
+    public function setConfigDir($dir)
+    {
+        $this->configDir = $dir;
     }
 
     public function getMode()
@@ -50,7 +58,7 @@ class Bootstrap
      */
     public function loadConfiguration($mode, $containerClassPrefix = '')
     {
-        $configPath = $this->pathToRoot . "config/";
+        $configPath = $this->pathToRoot . $this->configDir . "/";
         if (!$mode) {
             throw new \Exception("Mode not specified");
         }
