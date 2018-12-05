@@ -24,6 +24,11 @@ abstract class ActionResult
         return $this->code;
     }
 
+    public function getHeaders()
+    {
+        return [];
+    }
+
     /**
      * @return string
      */

@@ -126,6 +126,11 @@ class Controller
         /** @var Response $response */
         $response = $app->response();
 
+        $headers = $result->getHeaders();
+        foreach ($headers as $header => $value) {
+            $response->header($header, $value);
+        }
+
         if ($result instanceof RedirectResult) {
             $app->_redirect($result->getResult(), $result->getCode());
             die();
