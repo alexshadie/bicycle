@@ -25,12 +25,18 @@ abstract class App
 
     }
 
+    public function onBootstrapCreated(): void
+    {
+
+    }
+
     public function init()
     {
         $this->beforeInit();
 
         $cls = $this->bootstrapClass;
         $this->bootstrap = new $cls($this->root);
+        $this->onBootstrapCreated();
 
         $this->bootstrap->loadConfiguration($this->bootstrap->getMode());
 
