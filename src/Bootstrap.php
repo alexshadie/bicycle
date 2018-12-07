@@ -75,7 +75,7 @@ class Bootstrap
             'path_to_cache' => $this->pathToCache,
             'path_to_logs' => $this->pathToLogs,
             'path_to_www' => $this->pathToRoot . 'public/',
-            'path_to_config' => $this->pathToRoot . $this->configDir . '/',
+            'path_to_config' => realpath($this->pathToRoot . $this->configDir . '/'),
             'profile_name' => $this->profileName,
             'build_hash' => $buildHash,
         ];
