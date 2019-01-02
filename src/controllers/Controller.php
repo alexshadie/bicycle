@@ -34,13 +34,14 @@ class Controller
     /**
      * @param $name
      * @param $arguments
+     * @return mixed
      * @throws \Exception
      * @throws \ErrorException
      * @throws \ReflectionException
      */
     public function __call($name, $arguments)
     {
-        list(, $method) = explode("_", $name, 2);
+        list($methodType, $method) = explode("_", $name, 2);
 
         $reflectionClass = new \ReflectionClass($this);
         $reflectionMethod = $reflectionClass->getMethod($method);
@@ -62,29 +63,36 @@ class Controller
             $params[] = $this->container->getByType($methodArg->getClass()->getName());
         }
 
-        try {
-            $this->beforeAction($this->container->getByType(Request::class), $method, $params);
-            $this->preCall($method, $params);
-            $result = call_user_func_array([$this, $method], $params);
-            $this->postCall($method, $params);
-        } catch (\Exception $e) {
-            if (method_exists($this, 'handleException')) {
-                $result = $this->handleException($e);
-            } else {
-                $this->failedCall($method, $params);
-                throw $e;
-            }
-        }
+        switch ($methodType) {
+            case 'exec':
+                try {
+                    $this->beforeAction($this->container->getByType(Request::class), $method, $params);
+                    $this->preCall($method, $params);
+                    $result = call_user_func_array([$this, $method], $params);
+                    $this->postCall($method, $params);
+                } catch (\Exception $e) {
+                    if (method_exists($this, 'handleException')) {
+                        $result = $this->handleException($e);
+                    } else {
+                        $this->failedCall($method, $params);
+                        throw $e;
+                    }
+                }
 
-        if (!$result instanceof ActionResult) {
-            $this->failedCall($method, $params);
-            throw new \ErrorException("Return value must be subclass of ActionResult");
-        }
+                if (!$result instanceof ActionResult) {
+                    $this->failedCall($method, $params);
+                    throw new \ErrorException("Return value must be subclass of ActionResult");
+                }
 
-        if ($this->resultShouldBeReturned) {
-            return $this->processResult($result);
-        } else {
-            $this->processResult($result)->send();
+                if ($this->resultShouldBeReturned) {
+                    return $this->processResult($result);
+                } else {
+                    $this->processResult($result)->send();
+                }
+                break;
+
+            default:
+                return call_user_func_array([$this, $method], $params);
         }
     }
 
