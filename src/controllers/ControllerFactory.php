@@ -52,7 +52,7 @@ class ControllerFactory
         try {
             $class = new \ReflectionClass($controllerClass);
         } catch (\ReflectionException $e) {
-            throw new \Exception("Cannot instantiate class", $e);
+            throw new \Exception("Cannot instantiate class", 500, $e);
         }
 
         $ctor = $class->getConstructor();
