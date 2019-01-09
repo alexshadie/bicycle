@@ -25,8 +25,12 @@ class Bootstrap
     /** @var string  */
     private $configDir = "config";
 
+    /** @var string */
     protected $pathToViews = 'views/';
-
+    /** @var string */
+    protected $configFileResolverClass = DefaultConfigFileResolver::class;
+    /** @var string */
+    protected $paramResolverClass = DefaultParamResolver::class;
 
     public function __construct($pathToRoot)
     {
@@ -67,7 +71,9 @@ class Bootstrap
 
         $buildHash = $this->getBuildHash();
 
-        $configFile = $configPath . "config." . $mode . ".yml";
+        /** @var ConfigFileResolverInterface $configResolver */
+        $configResolver = new $this->configFileResolverClass;
+        $configFile = $configResolver->getConfig($configPath, $mode);
 
         $containerParams = [
             'path_to_application' => $this->pathToRoot,
@@ -79,6 +85,10 @@ class Bootstrap
             'profile_name' => $this->profileName,
             'build_hash' => $buildHash,
         ];
+
+        /** @var ParamResolverInterface $paramResolver */
+        $paramResolver = new $this->paramResolverClass;
+        $containerParams = $paramResolver->appendParams($containerParams);
 
         define('PATH_TO_VIEWS', $this->pathToApp . "/" . $this->pathToViews);
 

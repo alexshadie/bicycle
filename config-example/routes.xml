@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<container xmlns="http://symfony.com/schema/dic/services">
+    <services>
+        <service id="routeCollection" class="\ArrayObject">
+            <argument type="collection">
+                <argument key="GET|POST /">defaultController:index</argument>
+            </argument>
+        </service>
+    </services>
+</container>
