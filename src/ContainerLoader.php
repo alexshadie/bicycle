@@ -44,15 +44,24 @@ class ContainerLoader
                 $container = $this->compileContainer($configFile, $additionalParams);
 
                 $dumper = new PhpDumper($container);
-                $configCache->write(
-                    $dumper->dump([
+                if (!$debug) {
+                    $configCache->write(
+                        $dumper->dump([
+                            'base_class' => 'alexshadie\bicycle\Container',
+                            'class' => $class,
+                        ]),
+                        $container->getResources()
+                    );
+                    require_once $containerDumpFile;
+                } else {
+                    $containerCode = $dumper->dump([
                         'base_class' => 'alexshadie\bicycle\Container',
                         'class' => $class,
-                    ]),
-                    $container->getResources()
-                );
-
-                require_once $containerDumpFile;
+                    ]);
+                    eval(
+                    str_replace("<?php", "", $containerCode)
+                    );
+                }
                 $container = new $class();
             }
         } else {
