@@ -4,6 +4,8 @@
 namespace alexshadie\bicycle\action;
 
 
+use alexshadie\bicycle\Bootstrap;
+
 class ViewResult extends ActionResult
 {
     /** @var string */
@@ -29,7 +31,7 @@ class ViewResult extends ActionResult
     public function getResult(): string
     {
         $cwd = getcwd();
-        chdir(PATH_TO_VIEWS);
+        chdir(Bootstrap::getPathToViews());
         $layoutFile = 'layout/' . $this->layout . ".php";
         $this->params['view_file'] = $viewFile = $this->view . ".php";
         try {

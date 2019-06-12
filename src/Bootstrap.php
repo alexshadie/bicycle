@@ -28,9 +28,31 @@ class Bootstrap
     /** @var string */
     protected $pathToViews = 'views/';
     /** @var string */
+    protected static $fullPathToViews;
+    /** @var string */
+    protected static $savedPathToViews;
+    /** @var string */
     protected $configFileResolverClass = DefaultConfigFileResolver::class;
     /** @var string */
     protected $paramResolverClass = DefaultParamResolver::class;
+
+    public static function overridePathToViews($newPath)
+    {
+        if (is_null(self::$savedPathToViews)) {
+            self::$savedPathToViews = self::$fullPathToViews;
+        }
+        self::$fullPathToViews = $newPath;
+    }
+
+    public static function getPathToViews()
+    {
+        $path = self::$fullPathToViews;
+        if (self::$savedPathToViews) {
+            self::$fullPathToViews = self::$savedPathToViews;
+            self::$savedPathToViews = null;
+        }
+        return $path;
+    }
 
     public function __construct($pathToRoot)
     {
@@ -90,7 +112,7 @@ class Bootstrap
         $paramResolver = new $this->paramResolverClass;
         $containerParams = $paramResolver->appendParams($containerParams);
 
-        define('PATH_TO_VIEWS', $this->pathToApp . "/" . $this->pathToViews);
+        self::$fullPathToViews = $this->pathToApp . "/" . $this->pathToViews;
 
         $containerDumpFile = sprintf('%s/container-%s-%s.php', $this->pathToCache, $containerClassPrefix, $this->profileName);
         $containerLoader = new ContainerLoader();

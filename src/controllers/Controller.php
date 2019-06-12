@@ -31,15 +31,7 @@ class Controller
         $this->container = $container;
     }
 
-    /**
-     * @param $name
-     * @param $arguments
-     * @return mixed
-     * @throws \Exception
-     * @throws \ErrorException
-     * @throws \ReflectionException
-     */
-    public function __call($name, $arguments)
+    public function callMethod($name, $arguments, array $overrideBeans = [])
     {
         list($methodType, $method) = explode("_", $name, 2);
 
@@ -94,6 +86,19 @@ class Controller
             default:
                 return call_user_func_array([$this, $method], $params);
         }
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     * @throws \Exception
+     * @throws \ErrorException
+     * @throws \ReflectionException
+     */
+    public function __call($name, $arguments)
+    {
+        $this->callMethod($name, $arguments, []);
     }
 
     public function beforeAction(Request $request, string $method, array $params)
