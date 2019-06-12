@@ -28,6 +28,8 @@ class Bootstrap
     /** @var string */
     protected $pathToViews = 'views/';
     /** @var string */
+    protected static $basePathToViews;
+    /** @var string */
     protected static $fullPathToViews;
     /** @var string */
     protected static $savedPathToViews;
@@ -41,7 +43,7 @@ class Bootstrap
         if (is_null(self::$savedPathToViews)) {
             self::$savedPathToViews = self::$fullPathToViews;
         }
-        self::$fullPathToViews = $newPath;
+        self::$fullPathToViews = self::$basePathToViews . '/' . $newPath;
     }
 
     public static function getPathToViews()
@@ -58,6 +60,7 @@ class Bootstrap
     {
         $this->pathToRoot = rtrim($pathToRoot, '/') . '/';
         $this->pathToApp = $pathToRoot . "src/";
+        self::$basePathToViews = $pathToRoot . "src/";
         $this->pathToRuntime = $pathToRoot . "runtime/";
         $this->pathToCache = $this->pathToRuntime . "cache/";
         $this->pathToLogs = $this->pathToRuntime . "logs/";
