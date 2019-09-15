@@ -7,23 +7,23 @@ use alexshadie\bicycle\http\exception\NotFoundException;
 class Bootstrap
 {
     /** @var string */
-    private $pathToRoot;
+    protected $pathToRoot;
     /** @var string */
-    private $pathToApp;
+    protected $pathToApp;
     /** @var string */
-    private $pathToRuntime;
+    protected $pathToRuntime;
     /** @var string */
-    private $pathToCache;
+    protected $pathToCache;
     /** @var string */
-    private $pathToLogs;
+    protected $pathToLogs;
 
     /** @var string */
-    private $profileName;
+    protected $profileName;
     /** @var Container */
-    private $container;
+    protected $container;
 
     /** @var string  */
-    private $configDir = "config";
+    protected $configDir = "config";
 
     /** @var string */
     protected $pathToViews = 'views/';
