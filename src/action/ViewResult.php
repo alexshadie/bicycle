@@ -32,6 +32,9 @@ class ViewResult extends ActionResult
     {
         $cwd = getcwd();
         chdir(Bootstrap::getPathToViews());
+        $errorReporting = error_reporting();
+        error_reporting($errorReporting & ~E_NOTICE);
+
         $layoutFile = 'layout/' . $this->layout . ".php";
         $this->params['view_file'] = $viewFile = $this->view . ".php";
         try {
@@ -48,6 +51,8 @@ class ViewResult extends ActionResult
             throw $e;
         }
         chdir($cwd);
+        error_reporting($errorReporting);
+
         return $output;
     }
 
