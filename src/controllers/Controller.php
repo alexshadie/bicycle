@@ -15,9 +15,9 @@ use Psr\Log\LoggerInterface;
 class Controller
 {
     /** @var LoggerInterface */
-    private $logger;
+    protected $logger;
     /** @var Container */
-    private $container;
+    protected $container;
     /** @var bool */
     protected $resultShouldBeReturned = false;
 
@@ -58,10 +58,12 @@ class Controller
         switch ($methodType) {
             case 'exec':
                 try {
-                    $this->beforeAction($this->container->getByType(Request::class), $method, $params);
-                    $this->preCall($method, $params);
-                    $result = call_user_func_array([$this, $method], $params);
-                    $this->postCall($method, $params);
+                    $result = $this->beforeAction($this->container->getByType(Request::class), $method, $params);
+                    if (!$result instanceof ActionResult) {
+                        $this->preCall($method, $params);
+                        $result = call_user_func_array([$this, $method], $params);
+                        $this->postCall($method, $params);
+                    }
                 } catch (\Exception $e) {
                     if (method_exists($this, 'handleException')) {
                         $result = $this->handleException($e);
@@ -101,6 +103,12 @@ class Controller
         $this->callMethod($name, $arguments, []);
     }
 
+    /**
+     * @param Request $request
+     * @param string $method
+     * @param array $params
+     * @return void|ActionResult
+     */
     public function beforeAction(Request $request, string $method, array $params)
     {
 
