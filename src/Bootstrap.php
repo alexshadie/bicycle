@@ -113,7 +113,7 @@ class Bootstrap
         ];
 
         /** @var ParamResolverInterface $paramResolver */
-        $paramResolver = new $this->paramResolverClass;
+        $paramResolver = new $this->paramResolverClass($this);
         $containerParams = $paramResolver->appendParams($containerParams);
 
         self::$fullPathToViews = $this->pathToApp . "/" . $this->pathToViews;
