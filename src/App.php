@@ -5,6 +5,11 @@ namespace alexshadie\bicycle;
 
 abstract class App
 {
+    const MODE_DEVELOPMENT = 'development';
+    const MODE_TESTING = 'testing';
+    const MODE_STAGING = 'staging';
+    const MODE_PRODUCTION = 'production';
+
     protected $bootstrapClass = Bootstrap::class;
     protected $root = __DIR__ . "/../";
 
